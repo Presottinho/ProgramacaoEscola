@@ -5,9 +5,8 @@
 #include <time.h>
 
 /*implementar: sistema de aposta, esc para fechar*/
-/*resolver: ao jogar 2 vezes ele não salva a primeira dezena digitada, não aparecer sorteio*/
 
-int qtdDozens, values[11], drawValues[7], cont = 1, correctValues[7];
+int qtdDozens, values[11], drawValues[7], cont = 1, correctValues[7], rep = 0;
 bool right, oldPlayer = false, game = true;
 
 bool setQtdDozens(){
@@ -55,16 +54,17 @@ void draw(){
 
     for(int v = 1; v <= 6; v++){
         drawValues[v] = rand() % 60;
-        for(int g = 1; g <= v; g++){
-            if(drawValues[v] == drawValues[g] && g != v){
-                if(drawValues[v] == 0){
+        if(drawValues[v] != 0){
+            for(int o = 1; o <= v; o++){
+                if(drawValues[v] == drawValues[o] && v != o){
                     v = v - 1;
-                }else{
-                    printf("\nSorteando o %iº...\n", v);
-                    sleep(2);
-                    printf("O %iº numero foi: %i", v, drawValues[v]);
                 }
             }
+            printf("\nSorteando o %iº...\n", v);
+            sleep(2);
+            printf("O %iº numero sorteado foi: %i", v, drawValues[v]);
+        }else{
+            v = v - 1;
         }
     }
 
@@ -73,8 +73,13 @@ void draw(){
 void showResults(){
     printf("\nOs numeros escolhidos foram:\n");
     for(int r = 1; r <= qtdDozens; r++){
-        printf("%iº | %i \n", r, values[r + 1]);
-        sleep(1);
+        if(rep == 0){
+            printf("%iº | %i \n", r, values[r + 1]);
+            sleep(1);
+        }if(rep != 0){
+            printf("%iº | %i \n", r, values[r]);
+            sleep(1);
+        }
     }
 
     printf("\nOs numeros sorteados foram:\n");
@@ -149,6 +154,7 @@ int main(){
                     oldPlayer = true;
                 }else{
                     printf("\nOla %s, seja bem-vindo novamente a nossa casa de aposta.\nQuantas dezenas voce gostaria de apostar? Escolha um número entre 6 e 10!\n", name);
+                    rep = 1;
                 }
 
                 do{
