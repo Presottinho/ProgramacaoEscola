@@ -4,9 +4,9 @@
 #include <stdbool.h>
 #include <time.h>
 
-/*implementar: sistema de aposta, esc para fechar*/
+/*implementar: esc para fechar*/
 
-int qtdDozens, values[11], drawValues[7], cont = 1, correctValues[7], rep = 0;
+int qtdDozens, values[11], drawValues[7], cont = 1, correctValues[7], rep = 0, balance = 0, bet = 0, approve = 0;
 bool right, oldPlayer = false, game = true;
 
 bool setQtdDozens(){
@@ -98,10 +98,13 @@ void showResults(){
 
     if(cont == 4){
         printf("\nParabens! Voce acertou 4 e foi um Quadra-Tro!");
+        bet = bet * 2;
     }else if(cont == 5){
         printf("\nParabens! Voce acertou 5 e foi um Quina-Tro!");
+        bet = bet * 5;
     }else if(cont == 6){
         printf("\nParabens! Voce acertou 6 e foi um Sena-Tro!");
+        bet = bet * 10;
     }else{
         printf("\nInfelizmente você acertou apenas %i numeros e nao ganhou nada! Faltou apenas %i para voce ser um Quadra-Tro. Tente novamente! \n", cont - 1, (4 - cont + 1));
     }
@@ -127,10 +130,24 @@ void mainMenu(){
     printf("\n------------Opcoes------------\n");
     printf("1 - Iniciar apostas.\n");
     printf("2 - Mostrar ultimo resultado.\n");
+    printf("3 - Saldo\n");
     printf("Esc - Sair.\n");
     printf("------------------------------\n");
 
 
+}
+
+void withdraw(){
+    do{
+
+        printf("Quantos dolares voce deseja depositar? ");
+        scanf("%i", &balance);
+
+        if(balance == 0){
+            printf("Para entrar na casa de apostar voce precisar depositar algo. Tente novamente.");
+        }
+
+    }while(balance == 0);
 }
 
 int main(){
@@ -139,6 +156,8 @@ int main(){
     printf("---------------Seja bem-vindo ao Mega-Tro---------------\n\n");
     printf("Digite seu nome: ");
     gets(name);
+
+    withdraw();
 
     do{
 
@@ -149,13 +168,32 @@ int main(){
 
         switch(option){
             case 1:
+                if(balance == 0){
+                    printf("\nNotamos que seu saldo esta zerado. Caso deseje sair, pressione ESC.\n");
+                    withdraw();
+                }
                 if(oldPlayer == false){
-                    printf("\nOla %s, seja bem-vindo a nossa casa de aposta.\nQuantas dezenas voce gostaria de apostar? Escolha um número entre 6 e 10!\n", name);
+                    printf("\nOla %s, seja bem-vindo a nossa casa de aposta.\n", name);
                     oldPlayer = true;
                 }else{
-                    printf("\nOla %s, seja bem-vindo novamente a nossa casa de aposta.\nQuantas dezenas voce gostaria de apostar? Escolha um número entre 6 e 10!\n", name);
+                    printf("\nOla %s, seja bem-vindo novamente a nossa casa de aposta.\n", name);
                     rep = 1;
                 }
+
+                do{
+                    printf("Quanto voce gostaria de apostar? ");
+                    scanf("%i", &bet);
+                    if(bet > balance){
+                        printf("\nAposta invalida, quantidade excede seu saldo. Tente novamente\n");
+                        bet = 0;
+                    }else if(bet == 0){
+                        printf("Para jogar voce precisa apostar algo.");
+                    }else{
+                        balance = balance - bet;
+                    }
+                }while(bet == 0);
+
+                printf("Quantas dezenas voce gostaria de apostar? Escolha um número entre 6 e 10!\n");
 
                 do{
 
@@ -178,6 +216,10 @@ int main(){
 
             case 2:
                 showResults();
+            break;
+
+            case 3:
+                printf("Seu saldo e: %i", balance);
             break;
 
             default:
