@@ -4,10 +4,12 @@
 #include <stdbool.h>
 #include <time.h>
 
-/*implementar: esc para fechar*/
+/*implementar: esc para fechar, ordenar numeros sorteados(em progresso)*/
+/*bugs: duplicando numero na hora do sorteio, não voltar a tela inicial depois da reaposta*/
 
 int qtdDozens, values[11], drawValues[7], cont = 1, correctValues[7], rep = 0, balance = 0, bet = 0, approve = 0;
 bool right, oldPlayer = false, game = true;
+char option;
 
 bool setQtdDozens(){
 
@@ -38,12 +40,12 @@ int setDozens(){
 
 }
 
-void organizeDozens(){
-    for(int p = 1; p <= qtdDozens; p++){
-        if(values[p] > values[p + 1]){
-            int trade = values[p];
-            values[p] = values[p + 1];
-            values[p + 1] = trade;
+void organizeDozens(int table[]){
+    for(int p = 1; p <= 5; p++){
+        if(table[p] > table[p + 1]){
+            int trade = table[p];
+            table[p] = table[p + 1];
+            table[p + 1] = trade;
             p = 0;
         }
     }
@@ -53,7 +55,7 @@ void draw(){
     srand(time(NULL));
 
     for(int v = 1; v <= 6; v++){
-        drawValues[v] = rand() % 60;
+        drawValues[v] = rand() % 59 + 1;
         if(drawValues[v] != 0){
             for(int o = 1; o <= v; o++){
                 if(drawValues[v] == drawValues[o] && v != o){
@@ -68,18 +70,20 @@ void draw(){
         }
     }
 
+    organizeDozens(drawValues);
+
 }
 
-void showResults(){
-    printf("\nOs numeros escolhidos foram:\n");
-    for(int r = 1; r <= qtdDozens; r++){
-        if(rep == 0){
-            printf("%iº | %i \n", r, values[r + 1]);
-            sleep(1);
-        }if(rep != 0){
-            printf("%iº | %i \n", r, values[r]);
-            sleep(1);
-        }
+void showResults(bool al){
+    if(al == true){
+        printf("\nOs numeros escolhidos foram:\n");
+        for(int r = 1; r <= qtdDozens; r++){
+        printf("%iº | %i \n", r, values[r]);
+        sleep(1);
+    }
+    }else{
+        printf("Infelizmente voce nao apostou na ultima jogada.\n");
+        draw();
     }
 
     printf("\nOs numeros sorteados foram:\n");
@@ -105,7 +109,7 @@ void showResults(){
     }else if(cont == 6){
         printf("\nParabens! Voce acertou 6 e foi um Sena-Tro!");
         bet = bet * 10;
-    }else{
+    }else if(oldPlayer == true){
         printf("\nInfelizmente você acertou apenas %i numeros e nao ganhou nada! Faltou apenas %i para voce ser um Quadra-Tro. Tente novamente! \n", cont - 1, (4 - cont + 1));
     }
 
@@ -122,17 +126,17 @@ void compareValues(){
         }
     }
 
-    showResults();
+    showResults(oldPlayer);
 }
 
 void mainMenu(){
 
-    printf("\n------------Opcoes------------\n");
-    printf("1 - Iniciar apostas.\n");
-    printf("2 - Mostrar ultimo resultado.\n");
-    printf("3 - Saldo\n");
-    printf("Esc - Sair.\n");
-    printf("------------------------------\n");
+    printf("\n+------------Opcoes------------+\n");
+    printf("|1 - Iniciar apostas.          |\n");
+    printf("|2 - Mostrar ultimo resultado. |\n");
+    printf("|3 - Saldo                     |\n");
+    printf("|Esc - Sair.                   |\n");
+    printf("+------------------------------+\n");
 
 
 }
@@ -141,10 +145,15 @@ void withdraw(){
     do{
 
         printf("Quantos dolares voce deseja depositar? ");
+        if(oldPlayer == true){
+            printf("\n-1 - Menu Principal.\n");
+        }
         scanf("%i", &balance);
 
         if(balance == 0){
             printf("Para entrar na casa de apostar voce precisar depositar algo. Tente novamente.");
+        }else if(balance == -1){
+            return;
         }
 
     }while(balance == 0);
@@ -161,13 +170,11 @@ int main(){
 
     do{
 
-        int option;
-
         mainMenu();
-        scanf("%i", &option);
+        option = getch();
 
         switch(option){
-            case 1:
+            case '1':
                 if(balance == 0){
                     printf("\nNotamos que seu saldo esta zerado. Caso deseje sair, pressione ESC.\n");
                     withdraw();
@@ -205,7 +212,7 @@ int main(){
                 setDozens();
 
                 printf("Finalizado!\n");
-                organizeDozens();
+                organizeDozens(values);
 
                 printf("Agora realizaremos o sorteio de 6 numeros! Acompanhe com a gente!\n");
                 draw();
@@ -214,12 +221,16 @@ int main(){
                 compareValues();
             break;
 
-            case 2:
-                showResults();
+            case '2':
+                showResults(oldPlayer);
             break;
 
-            case 3:
+            case '3':
                 printf("Seu saldo e: %i", balance);
+            break;
+
+            case 27:
+                game = false;
             break;
 
             default:
