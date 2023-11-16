@@ -4,9 +4,6 @@
 #include <stdbool.h>
 #include <time.h>
 
-/*implementar: esc para fechar, ordenar numeros sorteados(em progresso)*/
-/*bugs: duplicando numero na hora do sorteio, não voltar a tela inicial depois da reaposta*/
-
 int qtdDozens, values[11], drawValues[7], cont = 1, correctValues[7], rep = 0, balance = 0, bet = 0, approve = 0;
 bool right, oldPlayer = false, game = true;
 char option;
@@ -60,6 +57,7 @@ void draw(){
             for(int o = 1; o <= v; o++){
                 if(drawValues[v] == drawValues[o] && v != o){
                     v = v - 1;
+                    break;
                 }
             }
             printf("\nSorteando o %iº...\n", v);
@@ -153,7 +151,10 @@ void withdraw(){
         if(balance == 0){
             printf("Para entrar na casa de apostar voce precisar depositar algo. Tente novamente.");
         }else if(balance == -1){
+            balance = 0;
             return;
+        }else{
+            printf("Valor digitado e invalido, tente novamente.\n");
         }
 
     }while(balance == 0);
@@ -171,13 +172,15 @@ int main(){
     do{
 
         mainMenu();
-        option = getch();
+        fflush(stdin);
+        option = getchar();
 
         switch(option){
             case '1':
                 if(balance == 0){
                     printf("\nNotamos que seu saldo esta zerado. Caso deseje sair, pressione ESC.\n");
                     withdraw();
+                    break;
                 }
                 if(oldPlayer == false){
                     printf("\nOla %s, seja bem-vindo a nossa casa de aposta.\n", name);
@@ -194,7 +197,9 @@ int main(){
                         printf("\nAposta invalida, quantidade excede seu saldo. Tente novamente\n");
                         bet = 0;
                     }else if(bet == 0){
-                        printf("Para jogar voce precisa apostar algo.");
+                        printf("Para jogar voce precisa apostar algo.\n");
+                    }else if(bet < 0){
+                        printf("Aposta invalida, tente novamente.\n");
                     }else{
                         balance = balance - bet;
                     }
