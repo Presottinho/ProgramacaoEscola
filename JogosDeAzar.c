@@ -6,7 +6,7 @@
 
 int qtdDozens, values[11], drawValues[7], cont = 1, correctValues[7], rep = 0, balance = 0, bet = 0, approve = 0;
 bool right, oldPlayer = false, game = true;
-char option;
+int option;
 
 bool setQtdDozens(){
 
@@ -37,8 +37,8 @@ int setDozens(){
 
 }
 
-void organizeDozens(int table[]){
-    for(int p = 1; p <= 5; p++){
+void organizeDozens(int table[], int qtd){
+    for(int p = 1; p <= qtd - 1; p++){
         if(table[p] > table[p + 1]){
             int trade = table[p];
             table[p] = table[p + 1];
@@ -68,7 +68,7 @@ void draw(){
         }
     }
 
-    organizeDozens(drawValues);
+    organizeDozens(drawValues, 6);
 
 }
 
@@ -133,7 +133,7 @@ void mainMenu(){
     printf("|1 - Iniciar apostas.          |\n");
     printf("|2 - Mostrar ultimo resultado. |\n");
     printf("|3 - Saldo                     |\n");
-    printf("|Esc - Sair.                   |\n");
+    printf("|4 - Sair.                     |\n");
     printf("+------------------------------+\n");
 
 
@@ -153,8 +153,6 @@ void withdraw(){
         }else if(balance == -1){
             balance = 0;
             return;
-        }else{
-            printf("Valor digitado e invalido, tente novamente.\n");
         }
 
     }while(balance == 0);
@@ -172,13 +170,12 @@ int main(){
     do{
 
         mainMenu();
-        fflush(stdin);
-        option = getchar();
+        scanf("%i", &option);
 
         switch(option){
-            case '1':
+            case 1:
                 if(balance == 0){
-                    printf("\nNotamos que seu saldo esta zerado. Caso deseje sair, pressione ESC.\n");
+                    printf("\nNotamos que seu saldo esta zerado.\n");
                     withdraw();
                     break;
                 }
@@ -217,7 +214,7 @@ int main(){
                 setDozens();
 
                 printf("Finalizado!\n");
-                organizeDozens(values);
+                organizeDozens(values, qtdDozens);
 
                 printf("Agora realizaremos o sorteio de 6 numeros! Acompanhe com a gente!\n");
                 draw();
@@ -226,16 +223,23 @@ int main(){
                 compareValues();
             break;
 
-            case '2':
+            case 2:
                 showResults(oldPlayer);
             break;
 
-            case '3':
+            case 3:
                 printf("Seu saldo e: %i", balance);
             break;
 
-            case 27:
-                game = false;
+            case 4:
+                printf("Tem certeza que deseja sair? Caso tenho certeza, pressione ESC, se não pressione qualquer tecla.\n");
+                char exit = getchar();
+                exit = getchar();
+                printf("%c", exit);
+                if(exit == 27){
+                    printf("VVolte sempre, %s!", name);
+                    game = false;
+                }
             break;
 
             default:
