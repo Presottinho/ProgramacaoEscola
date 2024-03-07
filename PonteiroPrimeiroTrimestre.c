@@ -111,13 +111,20 @@ int calcTouF(float *frequencia, float *periodo){
 
 int trianguloretangulo(float *oposto, float *adjacente, float *hipotenusa){
 
+    float resultado;
+
     if(*oposto == 0 && *adjacente == 0 && *hipotenusa == 0){
         printf("Erro de paramentro.");
         return -1;
     }else if(*hipotenusa == 0){
-        float resultado = (*oposto * *oposto) + (*adjacente * *adjacente);
+        resultado = (*oposto * *oposto) + (*adjacente * *adjacente);
         resultado = sqrt(resultado);
         printf("A hipotenusa e: %.2f", resultado);
+        return 0;
+    }else if(*adjacente == 0){
+        resultado = (*hipotenusa * *hipotenusa) - (*oposto * *oposto);
+        resultado = sqrt(resultado);
+        printf("A adjacente e: %.2f", resultado);
         return 0;
     }
 
