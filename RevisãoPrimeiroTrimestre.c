@@ -220,31 +220,29 @@ int main(){
             i = -1;
         }   
     } 
+    
+    float resultado;
 
     switch(option){
         case 1:
-            float resultado;
             resultado = (nota[0] + nota[1] + nota[2])/3;
             printf("A media e: %f", resultado);
         break;
 
         case 2:
-            float resultado2;
-            resultado2 = ((nota[0] * 3) +  (nota[1] * 3) + (nota[2] * 4)) / (10);
-            printf("A media e: %.2f", resultado2);
+            resultado = ((nota[0] * 3) +  (nota[1] * 3) + (nota[2] * 4)) / (10);
+            printf("A media e: %.2f", resultado);
         break;
 
         case 3:
-            float resultado3;
-            resultado3 = 3 / (1 / nota[0] + 1 / nota[1] + 1 / nota[2]);
-            printf("A media e: %.2f", resultado3);
+            resultado = 3 / (1 / nota[0] + 1 / nota[1] + 1 / nota[2]);
+            printf("A media e: %.2f", resultado);
         break;
 
         case 4:
-            float resultado4;
-            resultado4 = nota[0] * nota[1] * nota[2];
-            resultado4 = pow(resultado4, 1.0/3.0);
-            printf("A media e: %.2f", resultado4);
+            resultado = nota[0] * nota[1] * nota[2];
+            resultado = pow(resultado, 1.0/3.0);
+            printf("A media e: %.2f", resultado);
         break;
 
         default:
