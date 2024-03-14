@@ -110,7 +110,7 @@ int main(){
     
     // for(int i = 0; i < 3; i++){//for responsavel por ordenar os numeros
     //     int aux; //variavel auxiliar para ajudar na ordenacao
-    //     if(num[i] < num[i + 1] && i > 0){ //verifica se o atual numero e maior ou menor que o numero digitado anteriormente
+    //     if(num[i] < num[i + 1] && i > 0){ //verifica se o atual numero e maior ou menor que o numero digitado posteriormente
     //         aux = num[i];
     //         num[i] = num[i + 1];
     //         num[i + 1] = aux;
@@ -144,7 +144,7 @@ int main(){
     //     case 1:
     //         for(int i = 0; i < 3; i++){//for responsavel por ordenar os numeros
     //             int aux; //variavel auxiliar para ajudar na ordenacao
-    //             if(num[i] < num[i + 1] && i > 0){ //verifica se o atual numero e maior ou menor que o numero digitado anteriormente
+    //             if(num[i] < num[i + 1] && i > 0){ //verifica se o atual numero e maior ou menor que o numero digitado posteriormente
     //             aux = num[i];
     //             num[i] = num[i + 1];
     //             num[i + 1] = aux;
@@ -160,7 +160,7 @@ int main(){
     //     case 2:
     //         for(int i = 0; i < 3; i++){//for responsavel por ordenar os numeros
     //             int aux; //variavel auxiliar para ajudar na ordenacao
-    //             if(num[i] < num[i + 1] && i > 0){ //verifica se o atual numero e maior ou menor que o numero digitado anteriormente
+    //             if(num[i] < num[i + 1] && i > 0){ //verifica se o atual numero e maior ou menor que o numero digitado posteriormente
     //             aux = num[i];
     //             num[i] = num[i + 1];
     //             num[i + 1] = aux;
@@ -177,7 +177,7 @@ int main(){
     //         int aux2;
     //         for(int i = 0; i < 3; i++){//for responsavel por ordenar os numeros
     //             int aux; //variavel auxiliar para ajudar na ordenacao
-    //             if(num[i] < num[i + 1] && i > 0){ //verifica se o atual numero e maior ou menor que o numero digitado anteriormente
+    //             if(num[i] < num[i + 1] && i > 0){ //verifica se o atual numero e maior ou menor que o numero digitado posteriormente
     //             aux = num[i];
     //             num[i] = num[i + 1];
     //             num[i + 1] = aux;
@@ -213,7 +213,7 @@ int main(){
 
     for(int i = 0; i < 3; i++){//for responsavel por ordenar os numeros
         float aux; //variavel auxiliar para ajudar na ordenacao
-        if(nota[i] < nota[i + 1]){ //verifica se o atual numero e maior ou menor que o numero digitado anteriormente
+        if(nota[i] < nota[i + 1]){ //verifica se o atual numero e maior ou menor que o numero digitado posteriormente
             aux = nota[i];
             nota[i] = nota[i + 1];
             nota[i + 1] = aux;
