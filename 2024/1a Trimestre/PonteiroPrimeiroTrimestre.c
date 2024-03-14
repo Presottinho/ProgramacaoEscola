@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
+#include <stdbool.h>
 
 //Funcao exercicio 2
 void troca(int *p1, int *p2){
@@ -142,6 +143,7 @@ int trianguloretangulo(float *oposto, float *adjacente, float *hipotenusa){
 }
 
 //Funcao da questao 5.2
+/*
 int calcResis(float *ve, float *vs, int *r1, int *r2){
     
     if(*vs > *ve){
@@ -155,6 +157,53 @@ int calcResis(float *ve, float *vs, int *r1, int *r2){
         
     }
     
+}
+*/
+
+int ordenadordepalavras(char palavra1[], char palavra2[]){
+
+    bool palavra1maiuscula;
+    bool palavra2maiuscula;
+
+    if(palavra1[0] >= 97 && palavra1[0] <= 122){
+        palavra1maiuscula = false;
+    }else if(palavra1[0] >= 65 && palavra1[0] <= 90){
+        palavra1maiuscula = true;
+    }else{
+        printf("Caracter Invalido.");
+        return 0;
+    }
+
+    if(palavra2[0] >= 97 && palavra2[0] <= 122){    
+        palavra2maiuscula = false;
+    }else if(palavra2[0] >= 65 && palavra2[0] <= 90){
+        palavra2maiuscula = true;
+    }else{
+        printf("Caracter Invalido.");
+        return 0;
+    }
+
+    tolower(palavra1[0]);
+    tolower(palavra2[0]);
+
+    for(int i = 0; i < 20; i++){
+
+        if(palavra1[i] < palavra2[i]){
+            if(palavra1maiuscula == true){
+                palavra1[0] = palavra1[0] - 32;
+            }
+                printf("Primeiramente: %s\nSecundamente: %s\n", palavra1, palavra2);
+        }else if(palavra2[i] < palavra1[i]){
+            if(palavra2maiuscula == true){
+            palavra2[0] = palavra2[0] - 32;
+            }
+            printf("Primeiramente: %s\nSecundamente: %s\n", palavra2, palavra1);
+        }else{
+            i = i;
+        }
+
+    }
+
 }
 
 int main(){
@@ -230,7 +279,7 @@ int main(){
     */
     
     //Exercicio 5.2
-    
+    /*
     float ve, vs;
     int r1, r2;
     
@@ -247,5 +296,20 @@ int main(){
     scanf("%i", &r2);
     
     calcResis(&ve, &vs, &r1, &r2);
+    */
+
+   //Exercicio 6
+
+    char palavra1[20], palavra2[20];
+    
+    printf("Você devera digitar duas palavras.\n");
+
+    printf("Digite a primeira palavra: ");
+    gets(palavra1);
+
+    printf("Digite a segunda palavra: ");
+    gets(palavra2);
+
+    ordenadordepalavras(palavra1, palavra2);
     
 }
