@@ -38,9 +38,9 @@ int main()
     unsigned int numJogadas = 0;     // Numero de jogadas realizadas
                                     //
 // Inicializacao                   //
-    setlocale(LC_ALL, "");        // caracteres da lingua portuguesa
-    inicTab(tabRestaUm);         // Preenche tabuleiro inicial
-    showTab(tabRestaUm);        // Exibe o tabulero
+    setlocale(LC_ALL, "-");       // caracteres da lingua portuguesa
+    inicTab(&tabRestaUm);
+    showTab(&tabRestaUm);
 
 // Laco principal
     do{
@@ -59,9 +59,9 @@ int main()
                 break;
 
         default:
-            showTab(tabRestaUm);
+            showTab(&tabRestaUm);
             numJogadas++;
-            estado = confereJogo(tabRestaUm);
+            estado = confereJogo(&tabRestaUm);
             switch(estado){
 
             case VITORIA:

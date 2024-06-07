@@ -25,12 +25,12 @@
 // Posicao peca no tabuleiro
 typedef struct{
     int lin; // Posicao linha
-    int col; // Posicao destino
+    int col; // Posicao coluna
 }posTab_t;
 // Movimento a ser realizado
 typedef struct{
         posTab_t origem;   // Posicao inicio/origem
-        posTab_t destino; // Posicao fim/
+        posTab_t destino; // Posicao fim
 }movimento_t;
 
 typedef enum { OK = 0 , // movimento executado, segue o jogo
@@ -64,9 +64,10 @@ void showTab(char *tab);
         DERROTA - jogador desistiu do jogo
 */
 status_t qualJogada(movimento_t *jog){
-    printf("Qual a linha de origem?");
-    scanf("%i"); //continuar
-    printf("%i");
+        printf("Qual a linha de origem?");
+        scanf("%i", &jog->origem.lin);
+        printf("Qual a coluna de origem?");
+        scanf("%i", &jog->origem.col);
 }
 
 /**
