@@ -37,7 +37,7 @@ int main()
     char msg[MAXMSG];                 // mensagem para usuario
     unsigned int numJogadas = 0;     // Numero de jogadas realizadas
                                     //
-// Inicializacao                   //
+// Inicializacao                   // 
     setlocale(LC_ALL, "-");       // caracteres da lingua portuguesa
     inicTab(&tabRestaUm);
     showTab(&tabRestaUm);
@@ -45,7 +45,7 @@ int main()
 // Laco principal
     do{
       estado = qualJogada(&jogada);
-      if(estado != DERROTA){ // Se n�o pedir para sair, segue o jogo
+      if(estado != DERROTA){ // Se nao pedir para sair, segue o jogo
         estado = movimenta(&tabRestaUm, jogada);
         switch(estado){
         case   INVALIDO:

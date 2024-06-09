@@ -64,10 +64,19 @@ void showTab(char *tab);
         DERROTA - jogador desistiu do jogo
 */
 status_t qualJogada(movimento_t *jog){
-        printf("Qual a linha de origem?");
+
+        printf("Qual a linha de origem?(Digite 997 para desistir)");
         scanf("%i", &jog->origem.lin);
-        printf("Qual a coluna de origem?");
+
+        printf("Qual a coluna de origem?(Digite 997 para desistir)");
         scanf("%i", &jog->origem.col);
+
+        printf("Qual a linha de destino?(Digite 997 para desistir)");
+        scanf("%i", &jog->destino.lin);
+
+        printf("Qual a coluna de destino?(Digite 997 para desistir.)");
+        scanf("%i", &jog->destino.col);
+
 }
 
 /**
@@ -79,7 +88,20 @@ status_t qualJogada(movimento_t *jog){
         OCUPADO - posicao destino ocupada
         VAZIO  posicao destino ocupada
 */
-status_t movimenta(char *tab, movimento_t jog);
+status_t movimenta(char *tab, movimento_t jog){
+
+        do{
+
+                if(jog.destino.col - jog.destino.col < 2 && jog.origem.col - jog.destino.col > -2 && jog.origem.lin - jog.destino.lin < 2 && jog.origem.lin - jog.destino.lin > -2){
+                        return OK;
+                }else if(jog.origem.col == 997 || jog.origem.lin == 997 || jog.destino.col == 997 || jog.destino.lin == 997){
+                        return DERROTA;
+                }
+
+        }while(jog.origem.col - jog.destino.col < -2 && jog.origem.col - jog.destino.col > 2 && jog.origem.lin - jog.destino.lin < -2 && jog.origem.lin - jog.destino.lin > 2);
+
+
+};
 
 /**
 @brief Confere possibilidades de continuacao
