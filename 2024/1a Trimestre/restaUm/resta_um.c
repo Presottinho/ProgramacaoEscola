@@ -28,6 +28,8 @@
 
 #define MAXMSG 100  //tamanho maximo mensagens
 
+unsigned int numJogadas = 0;  // Numero de jogadas realizadas
+
 void transformadorColuna(char aux, int *jogada){
 
     tolower(aux);
@@ -73,7 +75,6 @@ int main()
     status_t estado = OK;         // resultado da função
     movimento_t jogada;         // movimento a realizar
     char msg[MAXMSG];           // mensagem para usuario
-    unsigned int numJogadas = 0;  // Numero de jogadas realizadas
 
 // Inicializacao
     setlocale(LC_ALL, "");        // caracteres da lingua portuguesa
@@ -121,3 +122,178 @@ int main()
 
 
 }// fim main
+
+status_t qualJogada(movimento_t* jog){
+
+    char aux;
+
+    printf("Qual a linha de origem?(Digite 997 para desistir): ");
+    scanf("%i", &jog->origem.lin);
+
+    fflush(stdin);
+
+    printf("Qual a coluna de origem?: ");
+    scanf("%c", &aux);
+    transformadorColuna(aux, &jog->origem.col);
+
+    fflush(stdin);
+
+    printf("Qual a linha de destino?: ");
+    scanf("%i", &jog->destino.lin);
+
+    fflush(stdin);
+
+    printf("Qual a coluna de destino?: ");
+    scanf("%c", &aux);
+    transformadorColuna(aux, &jog->destino.col);
+
+    fflush(stdin);
+
+    if(jog->origem.lin == 997){
+        return DERROTA;
+    }else{
+        return OK;
+    }
+
+}
+
+status_t movimenta(char* tab, movimento_t jog){
+    int ordenaCol[2];
+    int ordenaLin[2];
+
+    if(jog.destino.col >= jog.origem.col){
+        ordenaCol[0] = jog.origem.col;
+        ordenaCol[1] = jog.destino.col;
+    }else{
+        ordenaCol[0] = jog.destino.col;
+        ordenaCol[1] = jog.origem.col;
+    }
+
+    if(jog.destino.lin >= jog.origem.lin){
+        ordenaLin[0] = jog.origem.lin;
+        ordenaLin[1] = jog.destino.lin;
+    }else{
+        ordenaLin[0] = jog.destino.lin;
+        ordenaLin[1] = jog.origem.lin;
+    }
+
+    if(ordenaLin[1] - ordenaLin[0] <= 2 && ordenaLin[1] - ordenaLin[0] >= 0 && ordenaLin[1] - ordenaLin[0] != 1 && ordenaCol[1] - ordenaCol[0] <= 2 && ordenaCol[1] - ordenaCol[0] >= 0 && ordenaCol[1] - ordenaCol[0] != 1){
+        if(ordenaLin[1] - ordenaLin[0] == 2 && ordenaCol[1] - ordenaCol[0] == 2){
+            return INVALIDO;
+        }else{
+            switch(*(tab + (NCOL * jog.origem.lin) + jog.origem.col)){
+
+                case 'O':
+                    return VAZIO;
+                    break;
+
+                case 'X':
+                    return INVALIDO;
+                    break;
+
+            }
+
+            switch(*(tab + (NCOL * jog.destino.lin) + jog.destino.col)){
+
+                case 'O':
+                    switch(jog.destino.lin - jog.origem.lin){
+
+                        case 2:
+                            if(*(tab + (NCOL * (jog.destino.lin - 1)) + jog.destino.col) == '*'){
+                                *(tab + (NCOL * (jog.destino.lin - 1)) + jog.destino.col) = 'O';
+                                *(tab + (NCOL * jog.origem.lin) + jog.origem.col) = 'O';
+                                *(tab + (NCOL * jog.destino.lin) + jog.destino.col) = '*';
+                                return OK;
+                            }else if(*(tab + (NCOL * jog.origem.lin) + jog.origem.col) == 'O'){
+                                return VAZIO;
+                            }else{
+                                return INVALIDO;
+                            }
+                            break;
+
+                        case -2:
+                            if(*(tab + (NCOL * (jog.destino.lin + 1)) + jog.destino.col) == '*'){
+                                *(tab + (NCOL * (jog.destino.lin + 1)) + jog.destino.col) = 'O';
+                                *(tab + (NCOL * jog.origem.lin) + jog.origem.col) = 'O';
+                                *(tab + (NCOL * jog.destino.lin) + jog.destino.col) = '*';
+                                return OK;
+                            }else if(*(tab + (NCOL * jog.origem.lin) + jog.origem.col) == 'O'){
+                                return VAZIO;
+                            }else{
+                                return INVALIDO;
+                            }
+                            break;
+
+                        default:
+                            break;
+
+                    }
+
+                    switch(jog.destino.col - jog.origem.col){
+
+                        case 2:
+                            if(*(tab + (NCOL * jog.destino.lin) + (jog.destino.col - 1)) == '*'){
+                                *(tab + (NCOL * jog.destino.lin) + (jog.destino.col - 1)) = 'O';
+                                *(tab + (NCOL * jog.origem.lin) + jog.origem.col) = 'O';
+                                *(tab + (NCOL * jog.destino.lin) + jog.destino.col) = '*';
+                                return OK;
+                            }else if(*(tab + (NCOL * jog.origem.lin) + jog.origem.col) == 'O'){
+                                return VAZIO;
+                            }else{
+                                return INVALIDO;
+                            }
+                            break;
+
+                        case -2:
+                            if(*(tab + (NCOL * jog.destino.lin) + (jog.destino.col + 1)) == '*'){
+                                *(tab + (NCOL * jog.destino.lin) + (jog.destino.col + 1)) = 'O';
+                                *(tab + (NCOL * jog.origem.lin) + jog.origem.col) = 'O';
+                                *(tab + (NCOL * jog.destino.lin) + jog.destino.col) = '*';
+                                return OK;
+                            }else if(*(tab + (NCOL * jog.origem.lin) + jog.origem.col) == 'O'){
+                                return VAZIO;
+                            }else{
+                                return INVALIDO;
+                            }
+                            break;
+
+                    }
+                    break;
+
+                case '*':
+                    return OCUPADO;
+                    break;
+            }
+
+        }
+
+    }else{
+        return INVALIDO;
+    }
+
+}
+
+status_t confereJogo(char* tab){
+    int h = 0;
+
+    for(int i = 0; i < NLIN; i++){
+        for(int j = 0; j < NCOL; j++){
+            if(*(tab + (NLIN * i) + j) == '*'){
+                if(*(tab + (NLIN * (i - 1)) + j) == '*'|| *(tab + (NLIN * (i + 1)) + j) == '*'|| *(tab + (NLIN * i) + (j - 1)) == '*'|| *(tab + (NLIN * i) + (j + 1)) == '*'){
+                    if(*(tab + (NLIN * i) + (j - 1)) != 'X' || *(tab + (NLIN * i) + (j + 1)) != 'X'){
+                        h++;
+                    }
+                }
+            }
+        }
+    }
+
+    if(h >= 1){
+        return OK;
+    }else if(h <= 1 && numJogadas == 31){
+        return VITORIA;
+    }else{
+        return DERROTA;
+    }
+
+}
